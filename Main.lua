@@ -53,6 +53,8 @@ end
 function love.update(dt)
     bgscroll = (bgscroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
     gdscroll = (groundscroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+
+    bird:update(dt)
 end
 
 function love.draw()
