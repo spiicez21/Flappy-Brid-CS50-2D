@@ -7,7 +7,9 @@ VIRTUAL_WIDTH = 512
 VIRTUAL_HEIGHT = 288
 
 push = require 'push'
+Class = require 'class'
 
+require 'Bird'
 
 local bgscroll = 0
 local groundscroll = 0
@@ -24,6 +26,8 @@ function love.load()
 
     bg = love.graphics.newImage('Assets/background.png')
     gd = love.graphics.newImage('Assets/ground.png')
+
+    bird = Bird()
 
     love.window.setTitle('Flappy Bird - spicez21')
     love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -56,6 +60,6 @@ function love.draw()
 
     love.graphics.draw(bg, -bgscroll, 0)
     love.graphics.draw(gd, -gdscroll, VIRTUAL_HEIGHT - 16)
-
+    bird:render()
     push.finish()
 end
