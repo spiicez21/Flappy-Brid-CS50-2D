@@ -9,6 +9,16 @@ VIRTUAL_HEIGHT = 288
 push = require 'push'
 
 
+local bgscroll = 0
+local groundscroll = 0
+
+local BACKGROUND_SCROLL_SPEED = 30
+local GROUND_SCROLL_SPEED = 60
+
+local BACKGROUND_LOOPING_POINT = 413
+
+
+
 function love.load()
     love.graphics.setDefaultFilter('nearest', 'nearest')
 
@@ -36,11 +46,16 @@ function love.keypressed(key)
     end
 end
 
+function love.update(dt)
+    bgscroll = (bgscroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
+    gdscroll = (groundscroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+end
+
 function love.draw()
     push.start()
 
-    love.graphics.draw(bg, 0, 0)
-    love.graphics.draw(gd, 0, VIRTUAL_HEIGHT - 16)
+    love.graphics.draw(bg, -bgscroll, 0)
+    love.graphics.draw(gd, -gdscroll, VIRTUAL_HEIGHT - 16)
 
     push.finish()
 end
