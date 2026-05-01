@@ -1,7 +1,7 @@
 Bird = Class{}
 
 
-local GRAVITY = 10
+local GRAVITY = 980
 
 function Bird:init()
     self.img = love.graphics.newImage('Assets/bird.png')
@@ -15,7 +15,13 @@ function Bird:init()
 end
 
 function Bird:update(dt)
+
     self.dy = self.dy + GRAVITY * dt
+
+    if love.keyboard.wasPressed('space') then
+        self.dy = -300
+    end
+
     self.y = self.y + self.dy * dt
 end
 
