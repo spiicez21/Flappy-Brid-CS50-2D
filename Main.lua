@@ -10,6 +10,7 @@ push = require 'push'
 Class = require 'class'
 
 require 'Bird'
+require 'Pipe'
 
 local bgscroll = 0
 local groundscroll = 0
@@ -38,6 +39,9 @@ function love.load()
 
     push.setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, { upscale = 'normal' })
     love.keyboard.keysPressed = {}
+
+    pipes = {}
+    spawnTimer = 0
 end 
 
 function love.resize(w, h)
@@ -65,15 +69,32 @@ end
 function love.update(dt)
     bgscroll = (bgscroll + BACKGROUND_SCROLL_SPEED * dt) % BACKGROUND_LOOPING_POINT
     gdscroll = (groundscroll + GROUND_SCROLL_SPEED * dt) % VIRTUAL_WIDTH
+    
+    spawnTimer = spawnTimer + dt
+    if spawnTimer > 2 then
+        table.insert(pipes, Pipe())
+        spawnTimer = 0
+    end
 
     bird:update(dt)
     love.keyboard.keysPressed = {}
+
+    for k, pipe in pairs(pipes) do
+        pipe:update(dt)
+
+        if pipe.x < -pipe.width then
+            table.remove(pipes, k)
+        end
+    end
 end
 
 function love.draw()
     push.start()
 
     love.graphics.draw(bg, -bgscroll, 0)
+    for k, pipe in pairs(pipes) do
+        pipe:render()
+    end
     love.graphics.draw(gd, -gdscroll, VIRTUAL_HEIGHT - 16)
     bird:render()
     push.finish()
